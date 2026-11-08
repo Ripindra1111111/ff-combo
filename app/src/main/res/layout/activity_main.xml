@@ -1,109 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0D1117">
+    android:background="#0D1117"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FF COMBO"
+        android:textColor="#00FFCC"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.2"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ENTER LICENSE KEY"
+        android:textColor="#8B949E"
+        android:textSize="14sp"
+        android:layout_marginBottom="40dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:layout_marginBottom="24dp"
+        app:boxBackgroundColor="#21262D"
+        app:boxStrokeColor="#00FFCC"
+        app:hintTextColor="#00FFCC"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-        <TextView
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editKey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="FF COMBO"
-            android:textColor="#00FFCC"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:letterSpacing="0.2"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="V1.0 // SYSTEM READY"
-            android:textColor="#8B949E"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:layout_marginBottom="40dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnOverlay"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="1. CẤP QUYỀN OVERLAY"
+            android:hint="License Key"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            app:backgroundTint="#21262D"
-            app:cornerRadius="12dp"
-            app:strokeColor="#00FFCC"
-            app:strokeWidth="1dp"
-            android:layout_marginBottom="16dp"/>
+            android:textColorHint="#8B949E"
+            android:inputType="text"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAccessibility"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="2. BẬT ACCESSIBILITY (AIM)"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            app:backgroundTint="#21262D"
-            app:cornerRadius="12dp"
-            app:strokeColor="#00FFCC"
-            app:strokeWidth="1dp"
-            android:layout_marginBottom="16dp"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="LOGIN"
+        android:textColor="#0D1117"
+        android:textStyle="bold"
+        app:backgroundTint="#00FFCC"
+        app:cornerRadius="12dp"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCapture"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="3. BẮT ĐẦU CAPTURE"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            app:backgroundTint="#21262D"
-            app:cornerRadius="12dp"
-            app:strokeColor="#00FFCC"
-            app:strokeWidth="1dp"
-            android:layout_marginBottom="16dp"/>
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/switchAim"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="AIMLOCK BẬT"
-            android:textColor="#00FFCC"
-            android:textSize="16sp"
-            android:layout_marginBottom="24dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnStart"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="KHỞI CHẠY HỆ THỐNG"
-            android:textColor="#0D1117"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:backgroundTint="#00FFCC"
-            app:cornerRadius="12dp"
-            android:layout_marginBottom="16dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnStop"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="DỪNG"
-            android:textColor="#FF7B72"
-            android:textStyle="bold"
-            app:backgroundTint="#21262D"
-            app:cornerRadius="12dp"
-            app:strokeColor="#FF7B72"
-            app:strokeWidth="1dp"
-            android:layout_marginBottom="16dp"/>
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

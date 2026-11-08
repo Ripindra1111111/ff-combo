@@ -1,3 +1,0 @@
--keep class com.kanha.ffcombo.** { *; }
--keep class org.tensorflow.lite.** { *; }
--dontwarn org.tensorflow.lite.**

@@ -10,8 +10,8 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.button.MaterialButton
 import androidx.appcompat.widget.SwitchCompat
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.*
 
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         val btnOverlay = findViewById<MaterialButton>(R.id.btnOverlay)
         val btnAccessibility = findViewById<MaterialButton>(R.id.btnAccessibility)
         val btnCapture = findViewById<MaterialButton>(R.id.btnCapture)
-        val switchAim = findViewById<SwitchCompat>(R.id.switchAim).
+        val switchAim = findViewById<SwitchCompat>(R.id.switchAim)
         val btnStart = findViewById<MaterialButton>(R.id.btnStart)
         val btnStop = findViewById<MaterialButton>(R.id.btnStop)
 

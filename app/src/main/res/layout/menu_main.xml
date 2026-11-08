@@ -61,7 +61,7 @@
             app:strokeWidth="1dp"
             android:layout_marginBottom="16dp"/>
 
-        <com.google.android.material.materialswitch.MaterialSwitch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchAim"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

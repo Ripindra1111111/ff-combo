@@ -12,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +34,51 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initLoginScreen()
+        requestNotificationPermission()
+    }
+
+    private fun initLoginScreen() {
+        val editKey = findViewById<TextInputEditText>(R.id.editKey)
+        val btnLogin = findViewById<MaterialButton>(R.id.btnLogin)
+
+        btnLogin.setOnClickListener {
+            val key = editKey.text.toString().trim()
+            if (key.isEmpty()) {
+                Toast.makeText(this, "Nhập key vào!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            
+            btnLogin.text = "CHECKING..."
+            btnLogin.isEnabled = false
+
+            CoroutineScope(Dispatchers.IO).launch {
+                if (!KeyAuth.init()) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainActivity, "Lỗi kết nối server auth", Toast.LENGTH_SHORT).show()
+                        btnLogin.text = "LOGIN"
+                        btnLogin.isEnabled = true
+                    }
+                    return@launch
+                }
+
+                val error = KeyAuth.login(key)
+                withContext(Dispatchers.Main) {
+                    if (error == null) {
+                        Toast.makeText(this@MainActivity, "Thành công!", Toast.LENGTH_SHORT).show()
+                        initMainMenu()
+                    } else {
+                        Toast.makeText(this@MainActivity, error, Toast.LENGTH_LONG).show()
+                        btnLogin.text = "LOGIN"
+                        btnLogin.isEnabled = true
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initMainMenu() {
+        setContentView(R.layout.menu_main)
 
         val btnOverlay = findViewById<MaterialButton>(R.id.btnOverlay)
         val btnAccessibility = findViewById<MaterialButton>(R.id.btnAccessibility)
@@ -42,10 +89,7 @@ class MainActivity : AppCompatActivity() {
 
         btnOverlay.setOnClickListener {
             if (!Settings.canDrawOverlays(this)) {
-                startActivity(Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:$packageName")
-                ))
+                startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")))
             } else Toast.makeText(this, "Overlay đã có quyền!", Toast.LENGTH_SHORT).show()
         }
 
@@ -80,10 +124,8 @@ class MainActivity : AppCompatActivity() {
         btnStop.setOnClickListener {
             stopService(Intent(this, OverlayService::class.java))
             stopService(Intent(this, ScreenCaptureService::class.java))
-            Toast.makeText(this, "Đã dừng hệ thống", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Đã dừng", Toast.LENGTH_SHORT).show()
         }
-
-        requestNotificationPermission()
     }
 
     private fun requestNotificationPermission() {

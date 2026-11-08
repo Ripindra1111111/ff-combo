@@ -7,12 +7,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.materialswitch.MaterialSwitch
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,70 +25,65 @@ class MainActivity : AppCompatActivity() {
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 startForegroundService(i) else startService(i)
-            Toast.makeText(this, "capture started", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Capture started!", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val root = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(60, 120, 60, 60)
-        }
+        setContentView(R.layout.activity_main)
 
-        root.addView(btn("1. Cấp quyền overlay") {
+        val btnOverlay = findViewById<MaterialButton>(R.id.btnOverlay)
+        val btnAccessibility = findViewById<MaterialButton>(R.id.btnAccessibility)
+        val btnCapture = findViewById<MaterialButton>(R.id.btnCapture)
+        val switchAim = findViewById<MaterialSwitch>(R.id.switchAim)
+        val btnStart = findViewById<MaterialButton>(R.id.btnStart)
+        val btnStop = findViewById<MaterialButton>(R.id.btnStop)
+
+        btnOverlay.setOnClickListener {
             if (!Settings.canDrawOverlays(this)) {
                 startActivity(Intent(
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:$packageName")
                 ))
-            } else Toast.makeText(this, "đã có", Toast.LENGTH_SHORT).show()
-        })
+            } else Toast.makeText(this, "Overlay đã có quyền!", Toast.LENGTH_SHORT).show()
+        }
 
-        root.addView(btn("2. Bật Accessibility (cho aim)") {
+        btnAccessibility.setOnClickListener {
             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-            Toast.makeText(this, "bật FF Combo trong danh sách", Toast.LENGTH_LONG).show()
-        })
+            Toast.makeText(this, "Bật FF Combo trong danh sách", Toast.LENGTH_LONG).show()
+        }
 
-        root.addView(btn("3. Bắt đầu capture") {
+        btnCapture.setOnClickListener {
             val mpm = getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
             projLauncher.launch(mpm.createScreenCaptureIntent())
-        })
-
-        val aimSwitch = Switch(this).apply {
-            text = "Aimlock bật"
-            isChecked = true
-            setOnCheckedChangeListener { _, checked ->
-                AimAccessibilityService.enabled = checked
-            }
         }
-        root.addView(aimSwitch)
 
-        root.addView(btn("4. Start overlay + aim") {
+        switchAim.isChecked = true
+        switchAim.setOnCheckedChangeListener { _, checked ->
+            AimAccessibilityService.enabled = checked
+        }
+
+        btnStart.setOnClickListener {
             if (!Settings.canDrawOverlays(this)) {
-                Toast.makeText(this, "chưa cấp overlay", Toast.LENGTH_SHORT).show()
-                return@btn
+                Toast.makeText(this, "Chưa cấp quyền Overlay!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
             if (AimAccessibilityService.instance == null) {
-                Toast.makeText(this, "chưa bật Accessibility", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Chưa bật Accessibility!", Toast.LENGTH_SHORT).show()
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 startForegroundService(Intent(this, OverlayService::class.java))
             else startService(Intent(this, OverlayService::class.java))
-        })
+        }
 
-        root.addView(btn("5. Stop") {
+        btnStop.setOnClickListener {
             stopService(Intent(this, OverlayService::class.java))
             stopService(Intent(this, ScreenCaptureService::class.java))
-        })
+            Toast.makeText(this, "Đã dừng hệ thống", Toast.LENGTH_SHORT).show()
+        }
 
-        setContentView(root)
         requestNotificationPermission()
-    }
-
-    private fun btn(text: String, action: () -> Unit) = Button(this).apply {
-        this.text = text
-        setOnClickListener { action() }
     }
 
     private fun requestNotificationPermission() {
